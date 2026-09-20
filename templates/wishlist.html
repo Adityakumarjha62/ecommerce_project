@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>E-Commerce | Wishlist</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #222;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            height: 70px;
+            background: #111827;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        nav h2 {
+            font-size: 25px;
+            letter-spacing: 1px;
+        }
+
+        nav h2 span {
+            color: #60a5fa;
+        }
+
+        nav div {
+            display: flex;
+            gap: 28px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #60a5fa;
+        }
+
+
+        /* ================= PAGE HEADER ================= */
+
+        .page-header {
+            background:
+                linear-gradient(
+                    120deg,
+                    #111827,
+                    #1d4ed8
+                );
+
+            color: white;
+
+            text-align: center;
+
+            padding: 55px 20px;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #dbeafe;
+        }
+
+
+        /* ================= WISHLIST SECTION ================= */
+
+        .wishlist-section {
+            padding: 45px 8% 70px;
+        }
+
+        .wishlist-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .wishlist-top h2 {
+            font-size: 27px;
+        }
+
+        .wishlist-count {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* ================= WISHLIST GRID ================= */
+
+        .wishlist-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(230px, 1fr));
+
+            gap: 25px;
+        }
+
+
+        /* ================= PRODUCT CARD ================= */
+
+        .wishlist-card {
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.07);
+
+            transition: 0.3s;
+        }
+
+        .wishlist-card:hover {
+            transform: translateY(-6px);
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+
+        /* ================= PRODUCT IMAGE ================= */
+
+        .product-image {
+            height: 190px;
+
+            background: #f1f5f9;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+
+            margin-bottom: 15px;
+
+            color: #94a3b8;
+
+            font-size: 45px;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+
+        /* ================= PRODUCT DETAILS ================= */
+
+        .wishlist-card h3 {
+            font-size: 18px;
+
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            min-height: 42px;
+
+            margin-bottom: 8px;
+        }
+
+        .price {
+            color: #111827;
+
+            font-size: 21px;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .stock {
+            font-size: 13px;
+
+            margin-bottom: 10px;
+        }
+
+        .in-stock {
+            color: #16a34a;
+        }
+
+        .out-stock {
+            color: #dc2626;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .cart-btn {
+            width: 100%;
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #2563eb;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .cart-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .cart-btn:disabled {
+            background: #94a3b8;
+
+            cursor: not-allowed;
+        }
+
+
+        .remove-btn {
+            width: 100%;
+
+            padding: 11px;
+
+            border: 1px solid #e11d48;
+
+            border-radius: 8px;
+
+            background: white;
+
+            color: #e11d48;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            margin-top: 8px;
+
+            transition: 0.3s;
+        }
+
+        .remove-btn:hover {
+            background: #e11d48;
+
+            color: white;
+        }
+
+
+        /* ================= EMPTY WISHLIST ================= */
+
+        .empty-wishlist {
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 70px 20px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .empty-icon {
+            font-size: 65px;
+
+            margin-bottom: 20px;
+        }
+
+        .empty-wishlist h2 {
+            font-size: 25px;
+
+            margin-bottom: 10px;
+        }
+
+        .empty-wishlist p {
+            color: #64748b;
+
+            margin-bottom: 25px;
+        }
+
+        .shop-btn {
+            display: inline-block;
+
+            padding: 12px 24px;
+
+            background: #2563eb;
+
+            color: white;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .shop-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ================= LOADING ================= */
+
+        .loading {
+            text-align: center;
+
+            padding: 60px;
+
+            color: #64748b;
+
+            font-size: 18px;
+        }
+
+
+        /* ================= ERROR ================= */
+
+        .error-message {
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 50px 20px;
+
+            text-align: center;
+
+            color: #dc2626;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+
+            color: #cbd5e1;
+
+            text-align: center;
+
+            padding: 25px;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 768px) {
+
+            nav {
+                padding: 0 4%;
+            }
+
+            nav div {
+                gap: 12px;
+            }
+
+            nav a {
+                font-size: 13px;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+            .wishlist-section {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .wishlist-top {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <h2>
+            E-Commerce<span>.</span>
+        </h2>
+
+        <div>
+
+            <a href="/home">
+                Home
+            </a>
+
+            <a href="/cart">
+                🛒 Cart
+            </a>
+
+            <a href="/wishlist">
+                ❤️ Wishlist
+            </a>
+
+            <a href="/orders">
+                My Orders
+            </a>
+
+            <a href="/profile">
+                Profile
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= PAGE HEADER ================= -->
+
+    <section class="page-header">
+
+        <h1>
+            ❤️ My Wishlist
+        </h1>
+
+        <p>
+            Your favorite products are saved here.
+        </p>
+
+    </section>
+
+
+    <!-- ================= WISHLIST ================= -->
+
+    <section class="wishlist-section">
+
+        <div class="wishlist-top">
+
+            <h2>
+                Saved Products
+            </h2>
+
+            <div
+                class="wishlist-count"
+                id="wishlistCount"
+            >
+                Loading...
+            </div>
+
+        </div>
+
+
+        <div
+            class="wishlist-grid"
+            id="wishlistContainer"
+        >
+
+            <div class="loading">
+                Loading wishlist...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        © 2026 E-Commerce Platform |
+        Built with Flask, Python & MySQL
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        /* ================= LOAD WISHLIST ================= */
+
+        async function loadWishlist() {
+
+            const container =
+                document.getElementById(
+                    "wishlistContainer"
+                );
+
+            const countElement =
+                document.getElementById(
+                    "wishlistCount"
+                );
+
+
+            container.innerHTML =
+                `<div class="loading">
+                    Loading wishlist...
+                </div>`;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/wishlist/"
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                /* LOGIN REQUIRED */
+
+                if (
+                    response.status === 401
+                ) {
+
+                    alert(
+                        "Please login first."
+                    );
+
+                    window.location.href =
+                        "/login";
+
+                    return;
+
+                }
+
+
+                /* ERROR */
+
+                if (
+                    data.status !== "success"
+                ) {
+
+                    container.innerHTML =
+                        `<div class="error-message">
+                            Unable to load wishlist.
+                        </div>`;
+
+                    return;
+
+                }
+
+
+                /* UPDATE COUNT */
+
+                countElement.textContent =
+                    `${data.count || 0} item(s)`;
+
+
+                /* EMPTY WISHLIST */
+
+                if (
+                    !data.wishlist ||
+                    data.wishlist.length === 0
+                ) {
+
+                    container.innerHTML = `
+
+                        <div class="empty-wishlist">
+
+                            <div class="empty-icon">
+                                ❤️
+                            </div>
+
+                            <h2>
+                                Your Wishlist is Empty
+                            </h2>
+
+                            <p>
+                                You haven't added any products
+                                to your wishlist yet.
+                            </p>
+
+                            <a
+                                href="/home"
+                                class="shop-btn"
+                            >
+                                Continue Shopping
+                            </a>
+
+                        </div>
+
+                    `;
+
+                    return;
+
+                }
+
+
+                /* CLEAR CONTAINER */
+
+                container.innerHTML = "";
+
+
+                /* DISPLAY PRODUCTS */
+
+                data.wishlist.forEach(
+                    function(item) {
+
+
+                        const card =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        card.className =
+                            "wishlist-card";
+
+
+                        const isOutOfStock =
+                            item.stock <= 0;
+
+
+                        card.innerHTML = `
+
+                            <div class="product-image">
+
+                                ${
+                                    item.image
+
+                                    ?
+
+                                    `<img
+                                        src="/static/images/${item.image}"
+                                        alt="${item.name}"
+                                    >`
+
+                                    :
+
+                                    "🛍️"
+
+                                }
+
+                            </div>
+
+
+                            <h3>
+                                ${item.name}
+                            </h3>
+
+
+                            <p class="description">
+
+                                ${
+                                    item.description ||
+                                    "No description available."
+                                }
+
+                            </p>
+
+
+                            <p class="price">
+                                ₹${Number(item.price).toFixed(2)}
+                            </p>
+
+
+                            <p
+                                class="stock ${
+                                    isOutOfStock
+                                    ? "out-stock"
+                                    : "in-stock"
+                                }"
+                            >
+
+                                ${
+                                    isOutOfStock
+                                    ? "✕ Out of Stock"
+                                    : "✓ In Stock"
+                                }
+
+                            </p>
+
+
+                            <button
+                                class="cart-btn"
+                                ${
+                                    isOutOfStock
+                                    ? "disabled"
+                                    : ""
+                                }
+                                onclick="addToCart(${item.product_id})"
+                            >
+
+                                ${
+                                    isOutOfStock
+                                    ? "Out of Stock"
+                                    : "🛒 Add to Cart"
+                                }
+
+                            </button>
+
+
+                            <button
+                                class="remove-btn"
+                                onclick="removeFromWishlist(${item.product_id})"
+                            >
+
+                                ❌ Remove from Wishlist
+
+                            </button>
+
+                        `;
+
+
+                        container.appendChild(card);
+
+                    }
+                );
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Wishlist Error:",
+                    error
+                );
+
+
+                container.innerHTML =
+                    `<div class="error-message">
+                        Server connection error.
+                    </div>`;
+
+            }
+
+        }
+
+
+        /* ================= ADD TO CART ================= */
+
+        async function addToCart(productId) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/cart/add",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                product_id:
+                                    productId,
+
+                                quantity: 1
+
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                /* LOGIN REQUIRED */
+
+                if (
+                    response.status === 401
+                ) {
+
+                    alert(
+                        "Please login first."
+                    );
+
+                    window.location.href =
+                        "/login";
+
+                    return;
+
+                }
+
+
+                /* SUCCESS */
+
+                if (
+                    data.status === "success"
+                ) {
+
+                    alert(
+                        "✓ Product added to cart!"
+                    );
+
+                }
+
+                else {
+
+                    alert(
+                        data.message ||
+                        "Unable to add product to cart."
+                    );
+
+                }
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Cart Error:",
+                    error
+                );
+
+                alert(
+                    "Server connection error."
+                );
+
+            }
+
+        }
+
+
+        /* ================= REMOVE FROM WISHLIST ================= */
+
+        async function removeFromWishlist(productId) {
+
+            const confirmRemove =
+                confirm(
+                    "Are you sure you want to remove this product from your wishlist?"
+                );
+
+
+            if (!confirmRemove) {
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/wishlist/remove/${productId}`,
+                        {
+                            method: "DELETE"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                /* LOGIN REQUIRED */
+
+                if (
+                    response.status === 401
+                ) {
+
+                    alert(
+                        "Please login first."
+                    );
+
+                    window.location.href =
+                        "/login";
+
+                    return;
+
+                }
+
+
+                /* SUCCESS */
+
+                if (
+                    data.status === "success"
+                ) {
+
+                    alert(
+                        "Product removed from wishlist."
+                    );
+
+
+                    /* RELOAD WISHLIST */
+
+                    loadWishlist();
+
+                }
+
+                else {
+
+                    alert(
+                        data.message ||
+                        "Unable to remove product."
+                    );
+
+                }
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Remove Wishlist Error:",
+                    error
+                );
+
+
+                alert(
+                    "Server connection error."
+                );
+
+            }
+
+        }
+
+
+        /* ================= INITIAL LOAD ================= */
+
+        loadWishlist();
+
+    </script>
+
+</body>
+
+</html>

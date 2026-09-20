@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Details - E-Commerce</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            background: #111;
+            color: white;
+            padding: 18px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* CONTAINER */
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .container h1 {
+            margin-bottom: 25px;
+        }
+
+
+        /* BOX */
+
+        .box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+
+            margin-bottom: 25px;
+        }
+
+
+        /* ORDER HEADER */
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+
+            border-bottom: 1px solid #ddd;
+        }
+
+        .order-id {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+
+        /* STATUS */
+
+        .status {
+            background: #e8f5e9;
+            color: #2e7d32;
+
+            padding: 7px 15px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+
+            text-transform: capitalize;
+        }
+
+
+        /* TRACKING */
+
+        .tracking-title {
+            margin-bottom: 30px;
+        }
+
+        .tracking {
+            display: flex;
+
+            justify-content: space-between;
+
+            position: relative;
+
+            margin: 30px 20px 10px;
+        }
+
+
+        .tracking::before {
+            content: "";
+
+            position: absolute;
+
+            top: 18px;
+            left: 0;
+            right: 0;
+
+            height: 4px;
+
+            background: #ddd;
+
+            z-index: 0;
+        }
+
+
+        .step {
+            position: relative;
+
+            z-index: 1;
+
+            text-align: center;
+
+            width: 25%;
+        }
+
+
+        .circle {
+            width: 36px;
+            height: 36px;
+
+            border-radius: 50%;
+
+            background: #ddd;
+
+            color: #666;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 10px;
+
+            font-weight: bold;
+        }
+
+
+        .step.completed .circle {
+            background: #2e7d32;
+
+            color: white;
+        }
+
+
+        .step.active .circle {
+            background: #1976d2;
+
+            color: white;
+        }
+
+
+        .step-name {
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        /* ORDER INFO */
+
+        .order-info {
+            line-height: 1.8;
+        }
+
+
+        .address {
+            background: #f7f7f7;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            margin-top: 12px;
+        }
+
+
+        /* PRODUCTS */
+
+        .products-title {
+            margin-bottom: 15px;
+        }
+
+
+        .product-item {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 18px 0;
+
+            border-bottom: 1px solid #eee;
+        }
+
+
+        .product-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+
+            background: #eee;
+
+            border-radius: 8px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            color: #777;
+
+            font-size: 12px;
+
+            overflow: hidden;
+        }
+
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+
+        .product-name {
+            font-size: 17px;
+
+            font-weight: bold;
+
+            margin-bottom: 6px;
+        }
+
+
+        .product-details {
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        .subtotal {
+            font-size: 16px;
+
+            font-weight: bold;
+        }
+
+
+        /* TOTAL */
+
+        .total-box {
+            text-align: right;
+
+            margin-top: 20px;
+
+            padding-top: 20px;
+
+            border-top: 2px solid #222;
+        }
+
+
+        .total {
+            font-size: 24px;
+
+            font-weight: bold;
+        }
+
+
+        /* BUTTON */
+
+        .back-btn {
+            display: inline-block;
+
+            margin-top: 20px;
+
+            background: #111;
+
+            color: white;
+
+            padding: 12px 22px;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+        }
+
+
+        .back-btn:hover {
+            background: #333;
+        }
+
+
+        /* LOADING */
+
+        .loading {
+            background: white;
+
+            padding: 40px;
+
+            text-align: center;
+
+            border-radius: 10px;
+        }
+
+
+        /* ERROR */
+
+        .error {
+            background: #ffe5e5;
+
+            color: #c62828;
+
+            padding: 20px;
+
+            border-radius: 8px;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            nav {
+                padding: 15px 20px;
+
+                flex-direction: column;
+
+                gap: 10px;
+            }
+
+            nav a {
+                margin-left: 10px;
+            }
+
+            .order-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 12px;
+            }
+
+            .tracking {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .step-name {
+                font-size: 11px;
+            }
+
+            .product-item {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 10px;
+            }
+
+            .subtotal {
+                align-self: flex-end;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <h2>
+            E-Commerce
+        </h2>
+
+        <div>
+
+            <a href="/home">
+                Home
+            </a>
+
+            <a href="/cart">
+                Cart
+            </a>
+
+            <a href="/orders">
+                Orders
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- MAIN -->
+
+    <div class="container">
+
+        <h1>
+            Order Details
+        </h1>
+
+
+        <div id="orderContainer">
+
+            <div class="loading">
+                Loading order details...
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        async function loadOrderDetails() {
+
+            const container =
+                document.getElementById(
+                    "orderContainer"
+                );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/orders/{{ order_id }}"
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "Order Details API:",
+                    data
+                );
+
+
+                if (data.status !== "success") {
+
+                    container.innerHTML = `
+
+                        <div class="error">
+
+                            <h3>
+                                Error
+                            </h3>
+
+                            <p>
+                                ${data.message}
+                            </p>
+
+                            <a
+                                href="/orders"
+                                class="back-btn"
+                            >
+                                Back to Orders
+                            </a>
+
+                        </div>
+
+                    `;
+
+                    return;
+                }
+
+
+                const order = data.order;
+
+                const items = data.items;
+
+
+                /* ORDER STATUS */
+
+                const status =
+                    order.status.toLowerCase();
+
+
+                const statusSteps = [
+                    "confirmed",
+                    "processing",
+                    "shipped",
+                    "delivered"
+                ];
+
+
+                let currentIndex =
+                    statusSteps.indexOf(status);
+
+
+                if (currentIndex < 0) {
+                    currentIndex = 0;
+                }
+
+
+                /* TRACKING */
+
+                const trackingSteps = [
+
+                    {
+                        name: "Confirmed",
+                        icon: "✓"
+                    },
+
+                    {
+                        name: "Processing",
+                        icon: "✓"
+                    },
+
+                    {
+                        name: "Shipped",
+                        icon: "✓"
+                    },
+
+                    {
+                        name: "Delivered",
+                        icon: "✓"
+                    }
+
+                ];
+
+
+                let trackingHTML = "";
+
+
+                trackingSteps.forEach(
+                    function(step, index) {
+
+                        let className = "";
+
+
+                        if (index < currentIndex) {
+
+                            className = "completed";
+
+                        }
+                        else if (
+                            index === currentIndex
+                        ) {
+
+                            className = "active";
+
+                        }
+
+
+                        trackingHTML += `
+
+                            <div
+                                class="step ${className}"
+                            >
+
+                                <div class="circle">
+
+                                    ${step.icon}
+
+                                </div>
+
+                                <div class="step-name">
+
+                                    ${step.name}
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                );
+
+
+                /* PRODUCTS */
+
+                let productsHTML = "";
+
+
+                items.forEach(
+                    function(item) {
+
+                        productsHTML += `
+
+                            <div class="product-item">
+
+                                <div class="product-left">
+
+
+                                    <div class="product-image">
+
+                                        ${
+                                            item.image
+
+                                            ?
+
+                                            `<img
+                                                src="/static/images/${item.image}"
+                                                alt="${item.name}"
+                                            >`
+
+                                            :
+
+                                            "Product"
+                                        }
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <div class="product-name">
+
+                                            ${item.name}
+
+                                        </div>
+
+
+                                        <div class="product-details">
+
+                                            Price:
+                                            ₹${Number(
+                                                item.price
+                                            ).toFixed(2)}
+
+                                            <br>
+
+                                            Quantity:
+                                            ${item.quantity}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="subtotal">
+
+                                    ₹${Number(
+                                        item.subtotal
+                                    ).toFixed(2)}
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                );
+
+
+                /* FINAL HTML */
+
+                container.innerHTML = `
+
+                    <!-- ORDER SUMMARY -->
+
+                    <div class="box">
+
+
+                        <div class="order-header">
+
+
+                            <div class="order-id">
+
+                                Order #${order.id}
+
+                            </div>
+
+
+                            <div class="status">
+
+                                ${order.status}
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="order-info">
+
+                            <p>
+
+                                <strong>
+                                    Order Date:
+                                </strong>
+
+                                ${order.created_at}
+
+                            </p>
+
+
+                            <p>
+
+                                <strong>
+                                    Last Updated:
+                                </strong>
+
+                                ${order.updated_at}
+
+                            </p>
+
+
+                            <div class="address">
+
+                                <strong>
+                                    Shipping Address:
+                                </strong>
+
+                                <p>
+                                    ${order.shipping_address}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- TRACKING -->
+
+                    <div class="box">
+
+
+                        <h2 class="tracking-title">
+
+                            Order Tracking
+
+                        </h2>
+
+
+                        <div class="tracking">
+
+                            ${trackingHTML}
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- PRODUCTS -->
+
+                    <div class="box">
+
+
+                        <h2 class="products-title">
+
+                            Products
+
+                        </h2>
+
+
+                        <div>
+
+                            ${productsHTML}
+
+                        </div>
+
+
+                        <div class="total-box">
+
+                            <div class="total">
+
+                                Total:
+                                ₹${Number(
+                                    order.total_amount
+                                ).toFixed(2)}
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="/orders"
+                            class="back-btn"
+                        >
+
+                            ← Back to Orders
+
+                        </a>
+
+
+                    </div>
+
+                `;
+
+            }
+
+
+            catch (error) {
+
+                console.error(error);
+
+
+                container.innerHTML = `
+
+                    <div class="error">
+
+                        <h3>
+                            Server Connection Error
+                        </h3>
+
+                        <p>
+                            Unable to load order details.
+                        </p>
+
+                        <a
+                            href="/orders"
+                            class="back-btn"
+                        >
+
+                            Back to Orders
+
+                        </a>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        loadOrderDetails();
+
+    </script>
+
+
+</body>
+
+</html>

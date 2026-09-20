@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Details - MyStore</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            background: #111827;
+            color: white;
+
+            padding: 16px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        /* CONTAINER */
+
+        .container {
+            max-width: 1100px;
+
+            margin: 50px auto;
+
+            padding: 20px;
+        }
+
+        /* PRODUCT */
+
+        .product-details {
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 30px;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 40px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* IMAGE */
+
+        .product-image {
+            width: 100%;
+
+            height: 450px;
+
+            object-fit: cover;
+
+            border-radius: 12px;
+
+            background: #f3f4f6;
+        }
+
+        /* INFO */
+
+        .product-info {
+            padding: 10px;
+        }
+
+        .product-name {
+            font-size: 32px;
+
+            font-weight: bold;
+
+            margin-bottom: 20px;
+        }
+
+        .description {
+            color: #666;
+
+            font-size: 16px;
+
+            line-height: 1.7;
+
+            margin-bottom: 25px;
+        }
+
+        .price {
+            font-size: 32px;
+
+            color: #16a34a;
+
+            font-weight: bold;
+
+            margin-bottom: 10px;
+        }
+
+        .discount {
+            color: #e11d48;
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+        .stock {
+            margin-bottom: 25px;
+
+            font-size: 16px;
+        }
+
+        /* BUTTONS */
+
+        button {
+            width: 100%;
+
+            padding: 14px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 10px;
+        }
+
+        .cart-btn {
+            border: none;
+
+            background: #16a34a;
+
+            color: white;
+        }
+
+        .cart-btn:hover {
+            background: #15803d;
+        }
+
+        .wishlist-btn {
+            border: 1px solid #e11d48;
+
+            background: white;
+
+            color: #e11d48;
+        }
+
+        .wishlist-btn:hover {
+            background: #e11d48;
+
+            color: white;
+        }
+
+        .back-btn {
+            border: 1px solid #2563eb;
+
+            background: white;
+
+            color: #2563eb;
+        }
+
+        .back-btn:hover {
+            background: #2563eb;
+
+            color: white;
+        }
+
+        /* LOADING */
+
+        .loading {
+            text-align: center;
+
+            padding: 100px;
+
+            font-size: 20px;
+
+            color: #666;
+        }
+
+        .error {
+            text-align: center;
+
+            padding: 100px;
+
+            color: #dc2626;
+
+            font-size: 18px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 768px) {
+
+            nav {
+                flex-direction: column;
+
+                gap: 15px;
+
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+                gap: 15px;
+            }
+
+            .product-details {
+                grid-template-columns: 1fr;
+
+                padding: 20px;
+            }
+
+            .product-image {
+                height: 300px;
+            }
+
+            .product-name {
+                font-size: 26px;
+            }
+
+            .price {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+            🛍️ MyStore
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/home">🏠 Home</a>
+
+            <a href="/cart">🛒 Cart</a>
+
+            <a href="/wishlist">❤️ Wishlist</a>
+
+            <a href="/orders">📦 Orders</a>
+
+            <a href="/profile">👤 Profile</a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- PRODUCT -->
+
+    <div class="container">
+
+        <div id="productContainer">
+
+            <div class="loading">
+                Loading product...
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* =========================================
+           GET PRODUCT ID FROM URL
+        ========================================= */
+
+        const pathParts =
+            window.location.pathname
+                .split("/")
+                .filter(Boolean);
+
+        const productId =
+            pathParts[pathParts.length - 1];
+
+
+        /* =========================================
+           LOAD PRODUCT
+        ========================================= */
+
+        async function loadProduct() {
+
+            const container =
+                document.getElementById(
+                    "productContainer"
+                );
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/products/${productId}`
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Product not found"
+                    );
+
+                }
+
+
+                const product =
+                    data.product;
+
+
+                if (!product) {
+
+                    throw new Error(
+                        "Product not found"
+                    );
+
+                }
+
+
+                displayProduct(product);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Product Details Error:",
+                    error
+                );
+
+
+                container.innerHTML = `
+
+                    <div class="error">
+
+                        ❌ ${escapeHtml(
+                            error.message
+                        )}
+
+                        <br><br>
+
+                        <button
+                            class="back-btn"
+                            onclick="
+                                window.location.href =
+                                '/home'
+                            "
+                        >
+                            ← Back to Home
+                        </button>
+
+                    </div>
+
+                `;
+            }
+        }
+
+
+        /* =========================================
+           DISPLAY PRODUCT
+        ========================================= */
+
+        function displayProduct(product) {
+
+            const container =
+                document.getElementById(
+                    "productContainer"
+                );
+
+
+            const image =
+                product.image ||
+                "https://via.placeholder.com/600x500?text=No+Image";
+
+
+            const price =
+                Number(product.price || 0);
+
+
+            const discount =
+                Number(product.discount || 0);
+
+
+            const stock =
+                Number(product.stock || 0);
+
+
+            container.innerHTML = `
+
+                <div class="product-details">
+
+                    <!-- IMAGE -->
+
+                    <div>
+
+                        <img
+                            src="${escapeHtml(image)}"
+                            class="product-image"
+                            alt="${escapeHtml(
+                                product.name ||
+                                "Product"
+                            )}"
+                            onerror="
+                                this.src =
+                                'https://via.placeholder.com/600x500?text=No+Image'
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- INFORMATION -->
+
+                    <div class="product-info">
+
+                        <div class="product-name">
+
+                            ${escapeHtml(
+                                product.name ||
+                                "Product"
+                            )}
+
+                        </div>
+
+
+                        <div class="description">
+
+                            ${escapeHtml(
+                                product.description ||
+                                "No description available."
+                            )}
+
+                        </div>
+
+
+                        <div class="price">
+
+                            ₹${price.toFixed(2)}
+
+                        </div>
+
+
+                        ${
+                            discount > 0
+                            ?
+                            `
+                                <div class="discount">
+
+                                    🔥 ${discount}% OFF
+
+                                </div>
+                            `
+                            :
+                            ""
+                        }
+
+
+                        <div class="stock">
+
+                            ${
+                                stock > 0
+                                ?
+                                `✓ In Stock (${stock} available)`
+                                :
+                                `❌ Out of Stock`
+                            }
+
+                        </div>
+
+
+                        <!-- ADD TO CART -->
+
+                        <button
+                            class="cart-btn"
+                            ${
+                                stock <= 0
+                                ? "disabled"
+                                : ""
+                            }
+                            onclick="
+                                addToCart(
+                                    ${product.id}
+                                )
+                            "
+                        >
+
+                            ${
+                                stock > 0
+                                ?
+                                "🛒 Add to Cart"
+                                :
+                                "❌ Out of Stock"
+                            }
+
+                        </button>
+
+
+                        <!-- WISHLIST -->
+
+                        <button
+                            class="wishlist-btn"
+                            onclick="
+                                addToWishlist(
+                                    ${product.id}
+                                )
+                            "
+                        >
+
+                            ❤️ Add to Wishlist
+
+                        </button>
+
+
+                        <!-- BACK -->
+
+                        <button
+                            class="back-btn"
+                            onclick="
+                                window.location.href =
+                                '/home'
+                            "
+                        >
+
+                            ← Continue Shopping
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+        }
+
+
+        /* =========================================
+           ADD TO CART
+        ========================================= */
+
+        async function addToCart(productId) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/cart/add",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                product_id:
+                                    productId,
+
+                                quantity: 1
+
+                            })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (response.status === 401) {
+
+                    alert(
+                        "Please login first."
+                    );
+
+                    window.location.href =
+                        "/login";
+
+                    return;
+                }
+
+
+                if (
+                    response.ok &&
+                    data.status === "success"
+                ) {
+
+                    alert(
+                        "🛒 Product added to cart!"
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    data.message ||
+                    "Unable to add product to cart."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Cart Error:",
+                    error
+                );
+
+                alert(
+                    "Server connection error."
+                );
+            }
+        }
+
+
+        /* =========================================
+           ADD TO WISHLIST
+        ========================================= */
+
+        async function addToWishlist(productId) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/wishlist/add/${productId}`,
+                        {
+                            method: "POST"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (response.status === 401) {
+
+                    alert(
+                        "Please login first."
+                    );
+
+                    window.location.href =
+                        "/login";
+
+                    return;
+                }
+
+
+                if (response.status === 409) {
+
+                    alert(
+                        "❤️ Product is already in your wishlist."
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    response.ok &&
+                    data.status === "success"
+                ) {
+
+                    alert(
+                        "❤️ Product added to wishlist!"
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    data.message ||
+                    "Unable to add product to wishlist."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Wishlist Error:",
+                    error
+                );
+
+                alert(
+                    "Server connection error."
+                );
+            }
+        }
+
+
+        /* =========================================
+           ESCAPE HTML
+        ========================================= */
+
+        function escapeHtml(value) {
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+                return "";
+            }
+
+
+            return String(value)
+
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+        }
+
+
+        /* =========================================
+           PAGE LOAD
+        ========================================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                loadProduct();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

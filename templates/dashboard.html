@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - MyStore</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            padding: 35px;
+        }
+
+        /* ================= WELCOME ================= */
+
+        .welcome {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .welcome h1 {
+            margin-top: 0;
+        }
+
+        .welcome p {
+            color: #666;
+        }
+
+        /* ================= USER CARDS ================= */
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(210px, 1fr));
+
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .icon {
+            font-size: 40px;
+        }
+
+        .card h3 {
+            margin: 10px 0;
+        }
+
+        .card p {
+            color: #666;
+        }
+
+        .card a {
+            display: inline-block;
+
+            margin-top: 10px;
+
+            padding: 10px 18px;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+        }
+
+        .card a:hover {
+            background: #1d4ed8;
+        }
+
+        /* ================= ADMIN PANEL ================= */
+
+        .admin-section {
+            margin-top: 45px;
+        }
+
+        .admin-title {
+            background: #111827;
+
+            color: white;
+
+            padding: 18px 25px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            margin-bottom: 25px;
+        }
+
+        .admin-title h2 {
+            margin: 0;
+        }
+
+        .admin-cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(210px, 1fr));
+
+            gap: 20px;
+        }
+
+        .admin-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+
+            transition: 0.2s;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .admin-icon {
+            font-size: 40px;
+        }
+
+        .admin-card h3 {
+            margin: 12px 0;
+        }
+
+        .admin-card p {
+            color: #666;
+        }
+
+        .admin-card a {
+            display: inline-block;
+
+            margin-top: 10px;
+
+            padding: 10px 18px;
+
+            background: #dc2626;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+        }
+
+        .admin-card a:hover {
+            background: #b91c1c;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🛍️ MyStore
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/home">
+                🏠 Home
+            </a>
+
+            <a href="/dashboard">
+                📊 Dashboard
+            </a>
+
+            <a href="/cart">
+                🛒 Cart
+            </a>
+
+            <a href="/wishlist">
+                ❤️ Wishlist
+            </a>
+
+            <a href="/orders">
+                📦 Orders
+            </a>
+
+            <a href="/profile">
+                👤 Profile
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+        <!-- WELCOME -->
+
+        <div class="welcome">
+
+            <h1>
+                Welcome to MyStore 👋
+            </h1>
+
+            <p>
+                Manage your shopping activity from your dashboard.
+            </p>
+
+        </div>
+
+
+        <!-- ================= USER DASHBOARD ================= -->
+
+        <div class="cards">
+
+            <!-- Products -->
+
+            <div class="card">
+
+                <div class="icon">
+                    🛍️
+                </div>
+
+                <h3>
+                    Products
+                </h3>
+
+                <p>
+                    Browse and explore products.
+                </p>
+
+                <a href="/home">
+                    View Products
+                </a>
+
+            </div>
+
+
+            <!-- Cart -->
+
+            <div class="card">
+
+                <div class="icon">
+                    🛒
+                </div>
+
+                <h3>
+                    Shopping Cart
+                </h3>
+
+                <p>
+                    View your cart items.
+                </p>
+
+                <a href="/cart">
+                    Open Cart
+                </a>
+
+            </div>
+
+
+            <!-- Wishlist -->
+
+            <div class="card">
+
+                <div class="icon">
+                    ❤️
+                </div>
+
+                <h3>
+                    Wishlist
+                </h3>
+
+                <p>
+                    View your saved products.
+                </p>
+
+                <a href="/wishlist">
+                    Open Wishlist
+                </a>
+
+            </div>
+
+
+            <!-- Orders -->
+
+            <div class="card">
+
+                <div class="icon">
+                    📦
+                </div>
+
+                <h3>
+                    My Orders
+                </h3>
+
+                <p>
+                    View your previous orders.
+                </p>
+
+                <a href="/orders">
+                    View Orders
+                </a>
+
+            </div>
+
+
+            <!-- Profile -->
+
+            <div class="card">
+
+                <div class="icon">
+                    👤
+                </div>
+
+                <h3>
+                    Profile
+                </h3>
+
+                <p>
+                    Manage your account.
+                </p>
+
+                <a href="/profile">
+                    My Profile
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= ADMIN PANEL ================= -->
+
+        {% if session.get('user_role') == 'admin' %}
+
+        <div class="admin-section">
+
+            <div class="admin-title">
+
+                <h2>
+                    🔐 ADMIN PANEL
+                </h2>
+
+            </div>
+
+
+            <div class="admin-cards">
+
+
+                <!-- Add Product -->
+
+                <div class="admin-card">
+
+                    <div class="admin-icon">
+                        ➕
+                    </div>
+
+                    <h3>
+                        Add Product
+                    </h3>
+
+                    <p>
+                        Add new products to your store.
+                    </p>
+
+                    <a href="/admin/products">
+                        Add Product
+                    </a>
+
+                </div>
+
+
+                <!-- Edit Products -->
+
+                <div class="admin-card">
+
+                    <div class="admin-icon">
+                        ✏️
+                    </div>
+
+                    <h3>
+                        Edit Products
+                    </h3>
+
+                    <p>
+                        Update product information.
+                    </p>
+
+                    <a href="/admin/products">
+                        Edit Products
+                    </a>
+
+                </div>
+
+
+                <!-- Delete Products -->
+
+                <div class="admin-card">
+
+                    <div class="admin-icon">
+                        🗑️
+                    </div>
+
+                    <h3>
+                        Delete Products
+                    </h3>
+
+                    <p>
+                        Remove products from the store.
+                    </p>
+
+                    <a href="/admin/products">
+                        Manage Products
+                    </a>
+
+                </div>
+
+
+                <!-- Manage Orders -->
+
+                <div class="admin-card">
+
+                    <div class="admin-icon">
+                        📦
+                    </div>
+
+                    <h3>
+                        Manage Orders
+                    </h3>
+
+                    <p>
+                        View and update customer orders.
+                    </p>
+
+                    <a href="/admin/orders">
+                        Manage Orders
+                    </a>
+
+                </div>
+
+
+                <!-- Manage Users -->
+
+                <div class="admin-card">
+
+                    <div class="admin-icon">
+                        👥
+                    </div>
+
+                    <h3>
+                        Manage Users
+                    </h3>
+
+                    <p>
+                        View and manage registered users.
+                    </p>
+
+                    <a href="/admin/users">
+                        Manage Users
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

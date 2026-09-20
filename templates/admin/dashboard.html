@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        /* ==============================
+           NAVBAR
+        ============================== */
+
+        nav {
+            height: 75px;
+            background: #111827;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+        }
+
+        nav h2 {
+            font-size: 25px;
+        }
+
+        nav h2 span {
+            color: #3b82f6;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: #60a5fa;
+        }
+
+
+        /* ==============================
+           CONTAINER
+        ============================== */
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 45px 25px;
+        }
+
+        .heading {
+            margin-bottom: 35px;
+        }
+
+        .heading h1 {
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #64748b;
+            font-size: 17px;
+        }
+
+
+        /* ==============================
+           DASHBOARD CARDS
+        ============================== */
+
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.07);
+
+            border: 1px solid #e5e7eb;
+
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(0, 0, 0, 0.10);
+        }
+
+        .card-icon {
+            font-size: 30px;
+            margin-bottom: 18px;
+        }
+
+        .card-title {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .card-value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+
+        /* ==============================
+           QUICK ACTIONS
+        ============================== */
+
+        .section-title {
+            margin-top: 45px;
+            margin-bottom: 20px;
+            font-size: 25px;
+        }
+
+        .actions {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .action {
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 14px;
+
+            text-decoration: none;
+
+            color: #172033;
+
+            border: 1px solid #e5e7eb;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .action:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+
+        /* ==============================
+           LOADING
+        ============================== */
+
+        .loading {
+            text-align: center;
+
+            padding: 80px 20px;
+
+            font-size: 20px;
+
+            color: #64748b;
+        }
+
+
+        /* ==============================
+           ERROR
+        ============================== */
+
+        .error {
+            background: #fee2e2;
+
+            color: #b91c1c;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            margin-top: 20px;
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 900px) {
+
+            .dashboard-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .actions {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            nav {
+                padding: 0 20px;
+            }
+
+            nav a {
+                margin-left: 10px;
+            }
+
+            .container {
+                padding: 30px 15px;
+            }
+
+            .heading h1 {
+                font-size: 30px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==============================
+     NAVBAR
+============================== -->
+
+<nav>
+
+    <h2>
+        Admin<span>.</span>
+    </h2>
+
+    <div>
+
+        <a href="/home">
+            Home
+        </a>
+
+        <a href="/orders">
+            Orders
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ==============================
+     MAIN
+============================== -->
+
+<div class="container">
+
+
+    <div class="heading">
+
+        <h1>
+            Admin Dashboard 📊
+        </h1>
+
+        <p>
+            Manage and monitor your e-commerce platform
+        </p>
+
+    </div>
+
+
+    <!-- Loading -->
+
+    <div id="loading" class="loading">
+
+        Loading dashboard...
+
+    </div>
+
+
+    <!-- Dashboard -->
+
+    <div
+        id="dashboard"
+        style="display:none;"
+    >
+
+
+        <div class="dashboard-grid">
+
+
+            <!-- Users -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    👥
+                </div>
+
+                <div class="card-title">
+                    Total Users
+                </div>
+
+                <div
+                    class="card-value"
+                    id="totalUsers"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- Products -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📦
+                </div>
+
+                <div class="card-title">
+                    Total Products
+                </div>
+
+                <div
+                    class="card-value"
+                    id="totalProducts"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- Orders -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    🛒
+                </div>
+
+                <div class="card-title">
+                    Total Orders
+                </div>
+
+                <div
+                    class="card-value"
+                    id="totalOrders"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- Sales -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    💰
+                </div>
+
+                <div class="card-title">
+                    Total Sales
+                </div>
+
+                <div
+                    class="card-value"
+                    id="totalSales"
+                >
+                    ₹0
+                </div>
+
+            </div>
+
+
+            <!-- Pending Orders -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    ⏳
+                </div>
+
+                <div class="card-title">
+                    Pending Orders
+                </div>
+
+                <div
+                    class="card-value"
+                    id="pendingOrders"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- Low Stock -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    ⚠️
+                </div>
+
+                <div class="card-title">
+                    Low Stock Products
+                </div>
+
+                <div
+                    class="card-value"
+                    id="lowStockProducts"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==============================
+             QUICK ACTIONS
+        ============================== -->
+
+        <h2 class="section-title">
+            Quick Actions
+        </h2>
+
+
+        <div class="actions">
+
+            <a
+                href="/admin/products"
+                class="action"
+            >
+                📦 Manage Products
+            </a>
+
+
+            <a
+                href="/admin/orders"
+                class="action"
+            >
+                🛒 Manage Orders
+            </a>
+
+
+            <a
+                href="/home"
+                class="action"
+            >
+                🏠 View Store
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- Error -->
+
+    <div
+        id="error"
+        class="error"
+        style="display:none;"
+    >
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+// ==========================================
+// LOAD ADMIN DASHBOARD
+// ==========================================
+
+async function loadDashboard() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/dashboard"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        // Check API response
+
+        if (data.status !== "success") {
+
+            document.getElementById(
+                "loading"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "error"
+            ).style.display = "block";
+
+
+            document.getElementById(
+                "error"
+            ).innerText =
+                data.message ||
+                "Unable to load dashboard.";
+
+            return;
+        }
+
+
+        // Get dashboard data
+
+        const dashboard =
+            data.dashboard;
+
+
+        // Users
+
+        document.getElementById(
+            "totalUsers"
+        ).innerText =
+            dashboard.total_users;
+
+
+        // Products
+
+        document.getElementById(
+            "totalProducts"
+        ).innerText =
+            dashboard.total_products;
+
+
+        // Orders
+
+        document.getElementById(
+            "totalOrders"
+        ).innerText =
+            dashboard.total_orders;
+
+
+        // Sales
+
+        document.getElementById(
+            "totalSales"
+        ).innerText =
+            "₹" +
+            Number(
+                dashboard.total_sales
+            ).toLocaleString(
+                "en-IN"
+            );
+
+
+        // Pending orders
+
+        document.getElementById(
+            "pendingOrders"
+        ).innerText =
+            dashboard.pending_orders;
+
+
+        // Low stock
+
+        document.getElementById(
+            "lowStockProducts"
+        ).innerText =
+            dashboard.low_stock_products;
+
+
+        // Hide loading
+
+        document.getElementById(
+            "loading"
+        ).style.display = "none";
+
+
+        // Show dashboard
+
+        document.getElementById(
+            "dashboard"
+        ).style.display = "block";
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Dashboard Error:",
+            error
+        );
+
+
+        document.getElementById(
+            "loading"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "error"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "error"
+        ).innerText =
+            "Server connection error.";
+
+    }
+
+}
+
+
+// ==========================================
+// START
+// ==========================================
+
+loadDashboard();
+
+
+</script>
+
+
+</body>
+
+</html>

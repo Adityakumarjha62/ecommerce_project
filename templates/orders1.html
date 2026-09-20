@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders | E-Commerce</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            height: 70px;
+
+            background: #111827;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+
+        nav h2 {
+            font-size: 25px;
+            letter-spacing: 1px;
+        }
+
+
+        nav h2 span {
+            color: #60a5fa;
+        }
+
+
+        nav div {
+            display: flex;
+            gap: 28px;
+        }
+
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+
+            transition: 0.3s;
+        }
+
+
+        nav a:hover {
+            color: #60a5fa;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 85%;
+            max-width: 1100px;
+
+            margin: 40px auto;
+        }
+
+
+        .page-title {
+            margin-bottom: 30px;
+        }
+
+
+        .page-title h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+
+        .page-title p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* ================= ORDER CARD ================= */
+
+        .order-card {
+
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.07);
+
+            transition: 0.3s;
+        }
+
+
+        .order-card:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.11);
+        }
+
+
+        /* ================= ORDER TOP ================= */
+
+        .order-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding-bottom: 18px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+        }
+
+
+        .order-id {
+
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+
+        .order-id a {
+
+            color: #2563eb;
+
+            text-decoration: none;
+        }
+
+
+        .order-id a:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* ================= STATUS ================= */
+
+        .status {
+
+            padding: 8px 16px;
+
+            border-radius: 20px;
+
+            background: #dcfce7;
+
+            color: #15803d;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            text-transform: capitalize;
+        }
+
+
+        /* ================= ORDER INFORMATION ================= */
+
+        .order-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-top: 22px;
+        }
+
+
+        .info-box {
+
+            background: #f8fafc;
+
+            padding: 17px;
+
+            border-radius: 10px;
+
+            border: 1px solid #eef2f7;
+        }
+
+
+        .info-box small {
+
+            display: block;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .info-box strong {
+
+            font-size: 16px;
+
+            color: #111827;
+        }
+
+
+        /* ================= SHIPPING ADDRESS ================= */
+
+        .address {
+
+            margin-top: 20px;
+
+            background: #f8fafc;
+
+            padding: 17px;
+
+            border-radius: 10px;
+
+            border: 1px solid #eef2f7;
+        }
+
+
+        .address-title {
+
+            display: block;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .address-text {
+
+            font-size: 15px;
+
+            line-height: 1.5;
+
+            color: #111827;
+        }
+
+
+        /* ================= BUTTON ================= */
+
+        .order-actions {
+
+            margin-top: 22px;
+
+            display: flex;
+
+            justify-content: flex-end;
+        }
+
+
+        .details-btn {
+
+            display: inline-block;
+
+            padding: 12px 22px;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+
+            box-shadow:
+                0 4px 10px rgba(37, 99, 235, 0.20);
+        }
+
+
+        .details-btn:hover {
+
+            background: #1d4ed8;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 7px 15px rgba(37, 99, 235, 0.25);
+        }
+
+
+        /* ================= EMPTY ORDERS ================= */
+
+        .empty {
+
+            background: white;
+
+            padding: 65px 20px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+
+        .empty-icon {
+
+            font-size: 55px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .empty h2 {
+
+            margin-bottom: 10px;
+        }
+
+
+        .empty p {
+
+            color: #64748b;
+
+            margin-bottom: 20px;
+        }
+
+
+        .shop-btn {
+
+            display: inline-block;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 11px 22px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= LOADING ================= */
+
+        .loading {
+
+            text-align: center;
+
+            padding: 60px;
+
+            color: #64748b;
+
+            font-size: 18px;
+        }
+
+
+        /* ================= ERROR ================= */
+
+        .error {
+
+            background: #fee2e2;
+
+            color: #b91c1c;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            text-align: center;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            background: #111827;
+
+            color: #cbd5e1;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 50px;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 0 4%;
+            }
+
+
+            nav div {
+                gap: 12px;
+            }
+
+
+            nav a {
+                font-size: 12px;
+            }
+
+
+            .container {
+                width: 92%;
+            }
+
+
+            .page-title h1 {
+                font-size: 30px;
+            }
+
+
+            .order-top {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 12px;
+            }
+
+
+            .order-info {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .order-actions {
+
+                justify-content: stretch;
+            }
+
+
+            .details-btn {
+
+                width: 100%;
+
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <h2>
+            E-Commerce<span>.</span>
+        </h2>
+
+
+        <div>
+
+            <a href="/home">
+                Home
+            </a>
+
+
+            <a href="/cart">
+                🛒 Cart
+            </a>
+
+
+            <a href="/orders">
+                Orders
+            </a>
+
+
+            <a href="/profile">
+                Profile
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <div class="page-title">
+
+            <h1>
+                My Orders 📦
+            </h1>
+
+            <p>
+                Track and manage all your orders
+            </p>
+
+        </div>
+
+
+        <div id="ordersContainer">
+
+            <div class="loading">
+                Loading your orders...
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        © 2026 E-Commerce Platform
+        |
+        Built with Flask, Python & MySQL
+
+    </footer>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        async function loadOrders() {
+
+
+            const container =
+                document.getElementById(
+                    "ordersContainer"
+                );
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        "/api/orders/"
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+
+                /* LOGIN CHECK */
+
+                if (
+                    response.status === 401
+                ) {
+
+                    window.location.href =
+                        "/login";
+
+                    return;
+
+                }
+
+
+
+                /* ERROR CHECK */
+
+                if (
+                    data.status !== "success"
+                ) {
+
+                    container.innerHTML = `
+
+                        <div class="error">
+
+                            ${
+                                data.message ||
+                                "Unable to load orders."
+                            }
+
+                        </div>
+
+                    `;
+
+                    return;
+
+                }
+
+
+
+                /* NO ORDERS */
+
+                if (
+                    !data.orders ||
+                    data.orders.length === 0
+                ) {
+
+
+                    container.innerHTML = `
+
+                        <div class="empty">
+
+                            <div class="empty-icon">
+                                📦
+                            </div>
+
+
+                            <h2>
+                                No Orders Yet
+                            </h2>
+
+
+                            <p>
+                                You haven't placed any orders yet.
+                            </p>
+
+
+                            <a
+                                href="/home"
+                                class="shop-btn"
+                            >
+                                Start Shopping
+                            </a>
+
+                        </div>
+
+                    `;
+
+
+                    return;
+
+                }
+
+
+
+                /* CLEAR LOADING */
+
+                container.innerHTML = "";
+
+
+
+                /* DISPLAY ORDERS */
+
+                data.orders.forEach(
+                    function(order) {
+
+
+                        const card =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        card.className =
+                            "order-card";
+
+
+
+                        card.innerHTML = `
+
+
+                            <!-- ORDER HEADER -->
+
+                            <div class="order-top">
+
+
+                                <div class="order-id">
+
+                                    <a
+                                        href="/order-details/${order.id}"
+                                    >
+
+                                        Order #${order.id}
+
+                                    </a>
+
+                                </div>
+
+
+                                <div class="status">
+
+                                    ${order.status}
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- ORDER INFORMATION -->
+
+                            <div class="order-info">
+
+
+                                <div class="info-box">
+
+                                    <small>
+                                        Order Date
+                                    </small>
+
+
+                                    <strong>
+                                        ${order.created_at}
+                                    </strong>
+
+                                </div>
+
+
+
+                                <div class="info-box">
+
+                                    <small>
+                                        Total Amount
+                                    </small>
+
+
+                                    <strong>
+
+                                        ₹${Number(
+                                            order.total_amount
+                                        ).toFixed(2)}
+
+                                    </strong>
+
+                                </div>
+
+
+
+                                <div class="info-box">
+
+                                    <small>
+                                        Status
+                                    </small>
+
+
+                                    <strong>
+
+                                        ${order.status}
+
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- SHIPPING ADDRESS -->
+
+                            <div class="address">
+
+
+                                <span class="address-title">
+
+                                    Shipping Address
+
+                                </span>
+
+
+                                <div class="address-text">
+
+                                    ${order.shipping_address}
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- VIEW DETAILS BUTTON -->
+
+                            <div class="order-actions">
+
+
+                                <a
+                                    href="/order-details/${order.id}"
+                                    class="details-btn"
+                                >
+
+                                    View Order Details →
+
+                                </a>
+
+
+                            </div>
+
+
+                        `;
+
+
+                        container.appendChild(
+                            card
+                        );
+
+
+                    }
+                );
+
+
+            }
+
+
+            catch (error) {
+
+
+                console.error(
+                    "Orders Error:",
+                    error
+                );
+
+
+                container.innerHTML = `
+
+                    <div class="error">
+
+                        Server connection error.
+
+                        <br><br>
+
+                        Please make sure Flask
+                        server is running.
+
+                    </div>
+
+                `;
+
+
+            }
+
+        }
+
+
+
+        /* LOAD ORDERS */
+
+        loadOrders();
+
+
+    </script>
+
+
+</body>
+
+</html>

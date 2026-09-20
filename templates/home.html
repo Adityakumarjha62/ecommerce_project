@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MyStore - E-Commerce</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            background: #111827;
+            color: white;
+            padding: 16px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* ================= SEARCH ================= */
+
+        .search-container {
+            max-width: 700px;
+            margin: 30px auto;
+
+            display: flex;
+            gap: 10px;
+
+            padding: 0 20px;
+        }
+
+        .search-container input {
+            flex: 1;
+
+            padding: 14px 16px;
+
+            border: 1px solid #ddd;
+            border-radius: 8px;
+
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search-container input:focus {
+            border-color: #2563eb;
+        }
+
+        .search-container button {
+            padding: 14px 22px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #2563eb;
+            color: white;
+
+            font-size: 15px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background: #1d4ed8;
+        }
+
+        /* ================= CATEGORIES ================= */
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            padding: 10px 20px 30px;
+        }
+
+        .category-btn {
+            padding: 10px 18px;
+
+            border: 1px solid #2563eb;
+            border-radius: 20px;
+
+            background: white;
+            color: #2563eb;
+
+            cursor: pointer;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .category-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* ================= PRODUCT SECTION ================= */
+
+        .products-section {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .section-title p {
+            color: #666;
+        }
+
+        /* ================= PRODUCTS GRID ================= */
+
+        .products-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fill, minmax(250px, 1fr));
+
+            gap: 25px;
+        }
+
+        /* ================= PRODUCT CARD ================= */
+
+        .product-card {
+            background: white;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.08);
+
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ================= PRODUCT IMAGE ================= */
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+
+            object-fit: contain;
+
+            padding: 15px;
+
+            background: #f3f4f6;
+
+            display: block;
+        }
+
+        .product-info {
+            padding: 18px;
+        }
+
+        .product-name {
+            font-size: 19px;
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .product-description {
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            min-height: 42px;
+
+            margin-bottom: 12px;
+        }
+
+        /* ================= PRICE ================= */
+
+        .price {
+            font-size: 21px;
+
+            font-weight: bold;
+
+            color: #16a34a;
+
+            margin-bottom: 8px;
+        }
+
+        .discount {
+            color: #e11d48;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .stock {
+            font-size: 13px;
+
+            color: #555;
+
+            margin-bottom: 12px;
+        }
+
+        /* ================= ADD TO CART ================= */
+
+        .cart-btn {
+            width: 100%;
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #16a34a;
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .cart-btn:hover {
+            background: #15803d;
+        }
+
+        .cart-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* ================= VIEW DETAILS ================= */
+
+        .details-btn {
+            width: 100%;
+
+            padding: 11px;
+
+            border: 1px solid #2563eb;
+
+            border-radius: 8px;
+
+            background: white;
+
+            color: #2563eb;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            margin-top: 8px;
+
+            transition: 0.3s;
+        }
+
+        .details-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* ================= WISHLIST ================= */
+
+        .wishlist-btn {
+            width: 100%;
+
+            padding: 11px;
+
+            border: 1px solid #e11d48;
+
+            border-radius: 8px;
+
+            background: white;
+
+            color: #e11d48;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            margin-top: 8px;
+
+            transition: 0.3s;
+        }
+
+        .wishlist-btn:hover {
+            background: #e11d48;
+            color: white;
+        }
+
+        /* ================= LOADING ================= */
+
+        .loading {
+            text-align: center;
+
+            padding: 50px;
+
+            font-size: 18px;
+
+            color: #666;
+        }
+
+        /* ================= ERROR ================= */
+
+        .error {
+            text-align: center;
+
+            padding: 50px;
+
+            color: #dc2626;
+
+            font-size: 17px;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty {
+            text-align: center;
+
+            padding: 50px;
+
+            color: #666;
+
+            font-size: 17px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 50px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 768px) {
+
+            nav {
+                padding: 15px 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .search-container button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 45px 15px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .nav-links a {
+                font-size: 13px;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            🛍️ MyStore
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/home">🏠 Home</a>
+
+            <a href="/dashboard">📊 Dashboard</a>
+
+            <a href="/cart">🛒 Cart</a>
+
+            <a href="/wishlist">❤️ Wishlist</a>
+
+            <a href="/orders">📦 Orders</a>
+
+            <a href="/profile">👤 Profile</a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <h1>
+            Welcome to MyStore
+        </h1>
+
+        <p>
+            Find the best products at the best prices
+        </p>
+
+    </section>
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <div class="search-container">
+
+        <input type="text" id="searchInput" placeholder="Search products..." onkeydown="handleSearchKey(event)">
+
+        <button onclick="searchProducts()">
+            🔎 Search
+        </button>
+
+    </div>
+
+
+    <!-- ================= CATEGORIES ================= -->
+
+    <div class="categories">
+
+        <button class="category-btn" onclick="loadProducts('')">
+            All
+        </button>
+
+        <button class="category-btn" onclick="loadProducts('Electronics')">
+            📱 Electronics
+        </button>
+
+        <button class="category-btn" onclick="loadProducts('Laptop')">
+            💻 Laptops
+        </button>
+
+        <button class="category-btn" onclick="loadProducts('Mobile')">
+            📱 Mobiles
+        </button>
+
+        <button class="category-btn" onclick="loadProducts('Fashion')">
+            👕 Fashion
+        </button>
+
+        <button class="category-btn" onclick="loadProducts('Shoes')">
+            👟 Shoes
+        </button>
+
+        <button class="category-btn" onclick="loadProducts('Home')">
+            🏠 Home
+        </button>
+
+    </div>
+
+
+    <!-- ================= PRODUCTS ================= -->
+
+    <section class="products-section">
+
+        <div class="section-title">
+
+            <h2>
+                🛍️ Our Products
+            </h2>
+
+            <p>
+                Explore our latest products
+            </p>
+
+        </div>
+
+
+        <div id="productsContainer" class="products-grid">
+
+            <div class="loading">
+                Loading products...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 MyStore. All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        /* =========================================
+           LOCAL PRODUCT IMAGE SYSTEM
+        ========================================= */
+
+        // function getProductImage(product) {
+
+        //     const name =
+        //         String(product.name || "").toLowerCase();
+
+
+        //     /*
+        //         Images are stored in:
+
+        //         static/images/
+
+        //         Files:
+
+        //         mobile.jpg
+        //         keyboard.jpg
+        //         laptop.jpg
+        //         headphones.jpg
+        //         watch.jpg
+        //         Backpack.jpg
+        //         default.jpg
+        //     */
+
+
+        //     // Mobile / Phone
+        //     if (
+        //         name.includes("mobile") ||
+        //         name.includes("phone")
+        //     ) {
+
+        //         return "/static/images/mobile.jpg";
+        //     }
+
+
+        //     // Keyboard
+        //     if (
+        //         name.includes("keyboard")
+        //     ) {
+
+        //         return "/static/images/keyboard.jpg";
+        //     }
+
+
+        //     // Laptop
+        //     if (
+        //         name.includes("laptop")
+        //     ) {
+
+        //         return "/static/images/laptop.jpg";
+        //     }
+
+
+        //     // Headphones
+        //     if (
+        //         name.includes("headphone") ||
+        //         name.includes("headphones")
+        //     ) {
+
+        //         return "/static/images/headphones.jpg";
+        //     }
+
+
+        //     // Watch
+        //     if (
+        //         name.includes("watch")
+        //     ) {
+
+        //         return "/static/images/watch.jpg";
+        //     }
+
+
+        //     // Backpack
+        //     if (
+        //         name.includes("backpack") ||
+        //         name.includes("bag")
+        //     ) {
+
+        //         return "/static/images/Backpack.jpg";
+        //     }
+
+
+        //     // Default
+        //     return "/static/images/default.jpg";
+        // }
+
+        function getProductImage(product) {
+
+            const name =
+                String(product.name || "").toLowerCase();
+
+
+            // =========================
+            // HEADPHONES
+            // =========================
+
+            if (
+                name.includes("headphone") ||
+                name.includes("headphones")
+            ) {
+
+                return "/static/images/headphones.jpg";
+            }
+
+
+            // =========================
+            // GAMING MOUSE
+            // =========================
+
+            if (
+                name.includes("gaming mouse") ||
+                name.includes("mouse")
+            ) {
+
+                return "/static/images/gaming_mouse.jpg";
+            }
+
+
+            // =========================
+            // MOBILE / PHONE
+            // =========================
+
+            if (
+                name.includes("mobile") ||
+                name.includes("phone")
+            ) {
+
+                return "/static/images/mobile.jpg";
+            }
+
+
+            // =========================
+            // KEYBOARD
+            // =========================
+
+            if (
+                name.includes("keyboard")
+            ) {
+
+                return "/static/images/keyboard.jpg";
+            }
+
+
+            // =========================
+            // LAPTOP
+            // =========================
+
+            if (
+                name.includes("laptop")
+            ) {
+
+                return "/static/images/laptop.jpg";
+            }
+
+
+            // =========================
+            // WATCH
+            // =========================
+
+            if (
+                name.includes("watch")
+            ) {
+
+                return "/static/images/watch.jpg";
+            }
+
+
+            // =========================
+            // BACKPACK / BAG
+            // =========================
+
+            if (
+                name.includes("backpack") ||
+                name.includes("bag")
+            ) {
+
+                return "/static/images/Backpack.jpg";
+            }
+
+
+            // =========================
+            // DEFAULT
+            // =========================
+
+            return "/static/images/default.jpg";
+        }
+
+
+
+
+        /* =========================================
+           LOAD PRODUCTS
+        ========================================= */
+
+        async function loadProducts(search = "") {
+
+            const container =
+                document.getElementById(
+                    "productsContainer"
+                );
+
+
+            container.innerHTML = `
+
+                <div class="loading">
+
+                    Loading products...
+
+                </div>
+
+            `;
+
+
+            try {
+
+                let url =
+                    "/api/products/";
+
+
+                if (search) {
+
+                    url +=
+                        "?search=" +
+                        encodeURIComponent(search);
+
+                }
+
+
+                const response =
+                    await fetch(url);
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to load products"
+                    );
+
+                }
+
+
+                if (
+                    !data.products ||
+                    data.products.length === 0
+                ) {
+
+                    container.innerHTML = `
+
+                        <div class="empty">
+
+                            😔 No products found.
+
+                        </div>
+
+                    `;
+
+                    return;
+                }
+
+
+                container.innerHTML =
+                    data.products
+                        .map(function (product) {
+
+                            return createProductCard(
+                                product
+                            );
+
+                        })
+                        .join("");
+
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Product Error:",
+                    error
+                );
+
+
+                container.innerHTML = `
+
+                    <div class="error">
+
+                        ❌ Unable to load products.
+
+                        <br><br>
+
+                        ${escapeHtml(
+                    error.message
+                )}
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        /* =========================================
+           CREATE PRODUCT CARD
+        ========================================= */
+
+        function createProductCard(product) {
+
+
+            /*
+                IMPORTANT:
+
+                We are using local images
+                instead of product.image
+                from the database.
+            */
+
+            const image =
+                getProductImage(product);
+
+
+            const stock =
+                Number(product.stock || 0);
+
+
+            const price =
+                Number(product.price || 0);
+
+
+            const discount =
+                Number(product.discount || 0);
+
+
+            let buttonText =
+                "🛒 Add to Cart";
+
+
+            let disabled = "";
+
+
+            if (stock <= 0) {
+
+                buttonText =
+                    "❌ Out of Stock";
+
+                disabled =
+                    "disabled";
+            }
+
+
+            return `
+
+                <div class="product-card">
+
+
+                    <!-- PRODUCT IMAGE -->
+
+                    <img
+
+                        src="${image}"
+
+                        alt="${escapeHtml(
+                product.name ||
+                "Product"
+            )}"
+
+                        class="product-image"
+
+                        onerror="
+                            this.onerror=null;
+                            this.src='/static/images/default.jpg';
+                        "
+
+                    >
+
+
+                    <div class="product-info">
+
+
+                        <!-- PRODUCT NAME -->
+
+                        <div class="product-name">
+
+                            ${escapeHtml(
+                product.name ||
+                "Unnamed Product"
+            )}
+
+                        </div>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="product-description">
+
+                            ${escapeHtml(
+                product.description ||
+                "No description available."
+            )}
+
+                        </div>
+
+
+                        <!-- PRICE -->
+
+                        <div class="price">
+
+                            ₹${price.toFixed(2)}
+
+                        </div>
+
+
+                        <!-- DISCOUNT -->
+
+                        ${discount > 0
+                    ?
+                    `
+
+                                <div class="discount">
+
+                                    🔥 ${discount}% OFF
+
+                                </div>
+
+                            `
+                    :
+                    ""
+                }
+
+
+                        <!-- STOCK -->
+
+                        <div class="stock">
+
+                            ${stock > 0
+                    ?
+                    `✓ In Stock`
+                    :
+                    `❌ Out of Stock`
+                }
+
+                        </div>
+
+
+                        <!-- ADD TO CART -->
+
+                        <button
+
+                            class="cart-btn"
+
+                            ${disabled}
+
+                            onclick="
+                                addToCart(
+                                    ${product.id}
+                                )
+                            "
+
+                        >
+
+                            ${buttonText}
+
+                        </button>
+
+
+                        <!-- VIEW DETAILS -->
+
+                        <button
+
+                            class="details-btn"
+
+                            onclick="
+                                window.location.href =
+                                '/product/${product.id}'
+                            "
+
+                        >
+
+                            👁️ View Details
+
+                        </button>
+
+
+                        <!-- WISHLIST -->
+
+                        <button
+
+                            class="wishlist-btn"
+
+                            onclick="
+                                addToWishlist(
+                                    ${product.id}
+                                )
+                            "
+
+                        >
+
+                            ❤️ Add to Wishlist
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+            `;
+        }
+
+
+        /* =========================================
+           ADD TO CART
+        ========================================= */
+
+        async function addToCart(productId) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/cart/add",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body: JSON.stringify({
+
+                                product_id:
+                                    productId,
+
+                                quantity: 1
+
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (response.status === 401) {
+
+                    alert(
+                        "Please login first."
+                    );
+
+
+                    window.location.href =
+                        "/login";
+
+                    return;
+                }
+
+
+                if (
+                    response.ok &&
+                    data.status === "success"
+                ) {
+
+                    alert(
+                        "🛒 Product added to cart!"
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    data.message ||
+                    "Unable to add product to cart."
+                );
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Cart Error:",
+                    error
+                );
+
+
+                alert(
+                    "Server connection error."
+                );
+
+            }
+
+        }
+
+
+        /* =========================================
+           ADD TO WISHLIST
+        ========================================= */
+
+        async function addToWishlist(productId) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/wishlist/add/${productId}`,
+                        {
+
+                            method: "POST"
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (response.status === 401) {
+
+                    alert(
+                        "Please login first."
+                    );
+
+
+                    window.location.href =
+                        "/login";
+
+                    return;
+                }
+
+
+                if (response.status === 409) {
+
+                    alert(
+                        "❤️ Product is already in your wishlist."
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    response.ok &&
+                    data.status === "success"
+                ) {
+
+                    alert(
+                        "❤️ Product added to wishlist!"
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    data.message ||
+                    "Unable to add product to wishlist."
+                );
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Wishlist Error:",
+                    error
+                );
+
+
+                alert(
+                    "Server connection error."
+                );
+
+            }
+
+        }
+
+
+        /* =========================================
+           SEARCH
+        ========================================= */
+
+        function searchProducts() {
+
+            const searchInput =
+                document.getElementById(
+                    "searchInput"
+                );
+
+
+            const search =
+                searchInput.value.trim();
+
+
+            loadProducts(search);
+
+        }
+
+
+        /* =========================================
+           ENTER KEY SEARCH
+        ========================================= */
+
+        function handleSearchKey(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                searchProducts();
+
+            }
+
+        }
+
+
+        /* =========================================
+           ESCAPE HTML
+        ========================================= */
+
+        function escapeHtml(value) {
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+
+                return "";
+
+            }
+
+
+            return String(value)
+
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* =========================================
+           PAGE LOAD
+        ========================================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                loadProducts();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

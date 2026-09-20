@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Users</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        nav {
+            background: #111827;
+            color: white;
+            min-height: 75px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+        }
+
+        nav h2 {
+            font-size: 25px;
+        }
+
+        nav h2 span {
+            color: #3b82f6;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: #60a5fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 45px 25px;
+        }
+
+        .heading {
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #64748b;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow-x: auto;
+
+            border: 1px solid #e5e7eb;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #111827;
+            color: white;
+
+            padding: 17px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 17px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .role-select {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+        }
+
+        .delete-btn {
+            border: none;
+            background: #dc2626;
+            color: white;
+
+            padding: 9px 14px;
+            border-radius: 7px;
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        .message {
+            display: none;
+
+            padding: 14px;
+            margin-bottom: 20px;
+
+            border-radius: 9px;
+
+            text-align: center;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .loading {
+            padding: 50px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+
+            background: #2563eb;
+            color: white;
+
+            text-decoration: none;
+
+            padding: 11px 18px;
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+    <h2>
+        Admin<span>.</span>
+    </h2>
+
+    <div>
+
+        <a href="/admin/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/admin/products">
+            Products
+        </a>
+
+        <a href="/admin/orders">
+            Orders
+        </a>
+
+        <a href="/home">
+            Store
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="heading">
+
+        <h1>
+            Manage Users 👥
+        </h1>
+
+        <p>
+            View, manage and control registered users.
+        </p>
+
+    </div>
+
+
+    <div id="message"
+         class="message">
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Name</th>
+
+                    <th>Email</th>
+
+                    <th>Role</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="usersTable">
+
+                <tr>
+
+                    <td colspan="5"
+                        class="loading">
+
+                        Loading users...
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <a href="/dashboard"
+       class="back-btn">
+
+        ← Back to Dashboard
+
+    </a>
+
+</div>
+
+
+<script>
+
+async function loadUsers() {
+
+    const table =
+        document.getElementById(
+            "usersTable"
+        );
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/users"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.status !== "success") {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        ${data.message}
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        const users =
+            data.users || [];
+
+
+        if (users.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        No users found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        table.innerHTML = "";
+
+
+        users.forEach(function(user) {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${user.id}
+                </td>
+
+                <td>
+                    ${user.name}
+                </td>
+
+                <td>
+                    ${user.email}
+                </td>
+
+                <td>
+
+                    <select
+                        class="role-select"
+                        onchange="
+                            updateRole(
+                                ${user.id},
+                                this.value
+                            )
+                        "
+                    >
+
+                        <option
+                            value="user"
+                            ${user.role === "user"
+                                ? "selected"
+                                : ""}
+                        >
+                            User
+                        </option>
+
+                        <option
+                            value="admin"
+                            ${user.role === "admin"
+                                ? "selected"
+                                : ""}
+                        >
+                            Admin
+                        </option>
+
+                    </select>
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="delete-btn"
+                        onclick="
+                            deleteUser(
+                                ${user.id},
+                                '${user.name}'
+                            )
+                        "
+                    >
+                        Delete
+                    </button>
+
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    Server connection error.
+                </td>
+            </tr>
+        `;
+
+    }
+
+}
+
+
+async function updateRole(
+    userId,
+    role
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/admin/users/${userId}/role`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            role: role
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.status !== "success") {
+
+            showMessage(
+                data.message,
+                "error"
+            );
+
+            loadUsers();
+
+            return;
+        }
+
+
+        showMessage(
+            "User role updated successfully.",
+            "success"
+        );
+
+    }
+
+    catch (error) {
+
+        showMessage(
+            "Server connection error.",
+            "error"
+        );
+
+    }
+
+}
+
+
+async function deleteUser(
+    userId,
+    userName
+) {
+
+    const confirmed =
+        confirm(
+            `Are you sure you want to delete ${userName}?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/admin/users/${userId}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.status !== "success") {
+
+            showMessage(
+                data.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        showMessage(
+            "User deleted successfully.",
+            "success"
+        );
+
+
+        loadUsers();
+
+    }
+
+    catch (error) {
+
+        showMessage(
+            "Server connection error.",
+            "error"
+        );
+
+    }
+
+}
+
+
+function showMessage(
+    message,
+    type
+) {
+
+    const box =
+        document.getElementById(
+            "message"
+        );
+
+
+    box.style.display = "block";
+
+    box.className =
+        "message " + type;
+
+    box.innerText =
+        message;
+
+
+    setTimeout(function() {
+
+        box.style.display =
+            "none";
+
+    }, 3000);
+
+}
+
+
+loadUsers();
+
+</script>
+
+
+</body>
+
+</html>

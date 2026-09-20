@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #14213d;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .page-title {
+            font-size: 42px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #55708f;
+            font-size: 21px;
+            margin-bottom: 35px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 22px;
+            padding: 44px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding-bottom: 38px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .avatar {
+            width: 115px;
+            height: 115px;
+            border-radius: 50%;
+            background: #2864e8;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .profile-header h2 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .profile-header p {
+            color: #55708f;
+            font-size: 19px;
+        }
+
+        .section-title {
+            font-size: 27px;
+            margin: 38px 0 22px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            border: 1px solid #dce2e8;
+            border-radius: 13px;
+            padding: 24px;
+        }
+
+        .label {
+            color: #55708f;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .value {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 18px;
+            margin-top: 38px;
+        }
+
+        .btn {
+            display: block;
+            text-align: center;
+            padding: 17px;
+            border-radius: 11px;
+            text-decoration: none;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .orders-btn,
+        .cart-btn {
+            background: #2864e8;
+        }
+
+        .logout-btn {
+            background: #e52525;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 20px;
+            color: #55708f;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #d00000;
+            font-size: 18px;
+        }
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .profile-card {
+                padding: 25px;
+            }
+
+            .page-title {
+                font-size: 32px;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .info-grid,
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1 class="page-title">
+        My Profile 👤
+    </h1>
+
+    <p class="subtitle">
+        Manage your account information
+    </p>
+
+
+    <div class="profile-card">
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            Loading profile...
+        </div>
+
+
+        <!-- Profile Content -->
+        <div id="profileContent" style="display:none;">
+
+            <div class="profile-header">
+
+                <div class="avatar" id="avatar">
+                    U
+                </div>
+
+                <div>
+
+                    <h2 id="profileName">
+                        User
+                    </h2>
+
+                    <p>
+                        E-Commerce Customer
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <h2 class="section-title">
+                Account Information
+            </h2>
+
+
+            <div class="info-grid">
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Name
+                    </div>
+
+                    <div class="value" id="name">
+                        -
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Email
+                    </div>
+
+                    <div class="value" id="email">
+                        -
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Account Type
+                    </div>
+
+                    <div class="value" id="role">
+                        -
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="label">
+                        Account Status
+                    </div>
+
+                    <div class="value">
+                        Active
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <a href="/orders" class="btn orders-btn">
+                    📦 My Orders
+                </a>
+
+                <a href="/cart" class="btn cart-btn">
+                    🛒 My Cart
+                </a>
+
+                <button
+                    class="btn logout-btn"
+                    onclick="logout()">
+                    🚪 Logout
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Error -->
+        <div
+            id="error"
+            class="error"
+            style="display:none;">
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+async function loadProfile() {
+
+    try {
+
+        const response =
+            await fetch("/api/auth/profile");
+
+        const data =
+            await response.json();
+
+
+        if (data.status !== "success") {
+
+            document.getElementById("loading").style.display = "none";
+
+            document.getElementById("error").style.display = "block";
+
+            document.getElementById("error").innerText =
+                data.message || "Unable to load profile.";
+
+            return;
+        }
+
+
+        const user = data.user;
+
+
+        // Set profile name
+
+        document.getElementById("profileName").innerText =
+            user.name;
+
+
+        // Set name
+
+        document.getElementById("name").innerText =
+            user.name;
+
+
+        // Set email
+
+        document.getElementById("email").innerText =
+            user.email;
+
+
+        // Set role
+
+        document.getElementById("role").innerText =
+            user.role;
+
+
+        // Set avatar first letter
+
+        document.getElementById("avatar").innerText =
+            user.name.charAt(0).toUpperCase();
+
+
+        // Hide loading
+
+        document.getElementById("loading").style.display =
+            "none";
+
+
+        // Show profile
+
+        document.getElementById("profileContent").style.display =
+            "block";
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        document.getElementById("loading").style.display =
+            "none";
+
+        document.getElementById("error").style.display =
+            "block";
+
+        document.getElementById("error").innerText =
+            "Server connection error.";
+
+    }
+
+}
+
+
+async function logout() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/auth/logout",
+                {
+                    method: "POST"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.status === "success") {
+
+            window.location.href = "/login";
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert("Logout failed.");
+
+    }
+
+}
+
+
+// Load profile when page opens
+
+loadProfile();
+
+</script>
+
+</body>
+
+</html>
