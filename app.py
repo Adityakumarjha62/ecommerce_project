@@ -144,8 +144,13 @@
 # if __name__ == "__main__":
 #     app.run(debug=True)
 
+
+
+# from operator import add
+
 from flask import Flask, jsonify, render_template
 import mysql.connector
+import os
 
 from config import Config
 from routes.auth import auth_bp
@@ -316,13 +321,24 @@ def test_database():
 
 #     app.run(debug=True)
 
+# if __name__ == "__main__":
+#     import webbrowser
+#     from threading import Timer
+
+#     def open_browser():
+#         webbrowser.open("http://127.0.0.1:5000/login")
+
+#     Timer(1, open_browser).start()
+
+    # app.run(debug=True, use_reloader=False)
+
 if __name__ == "__main__":
-    import webbrowser
-    from threading import Timer
-
-    def open_browser():
-        webbrowser.open("http://127.0.0.1:5000/login")
-
-    Timer(1, open_browser).start()
-
-    app.run(debug=True, use_reloader=False)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000)),
+        debug=False,
+        use_reloader=False
+    )    
+# git add app.py
+# git commit -m "Fix Railway deployment port"
+# git push
