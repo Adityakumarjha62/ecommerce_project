@@ -1,6 +1,6 @@
 # ecommerce_project – Advanced E-Commerce Platform
 
-ShopSphere is a full-stack e-commerce web application built using Python, Flask, MySQL, HTML, CSS and JavaScript.
+e-commerce_project is a full-stack e-commerce web application built using Python, Flask, MySQL, HTML, CSS and JavaScript.
 
 The project provides a complete shopping workflow including user authentication, product browsing, shopping cart, checkout, wishlist, order management and an admin panel.
 
